@@ -19,6 +19,7 @@ esac
 
 command -v git >/dev/null 2>&1 || fail "Git is not installed. Install Git and run this installer again."
 command -v python3 >/dev/null 2>&1 || fail "Python 3 is not installed or is not on PATH."
+python3 -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 9) else 1)' || fail "iOrchid requires Python 3.9 or newer."
 
 [ -n "${HOME:-}" ] || fail "HOME is not set."
 [ -d "$HOME" ] || fail "Home directory does not exist: $HOME"
@@ -61,8 +62,11 @@ else
 fi
 
 if [ -f "$REPO_DIR/requirements.txt" ]; then
-  echo "Installing Python dependencies from requirements.txt..."
-  python3 -m pip install --user -r "$REPO_DIR/requirements.txt" || fail "Python dependency installation failed. Review the pip error above."
+  echo "Creating an isolated Python environment..."
+  python3 -m venv "$REPO_DIR/venv" || fail "Could not create a Python virtual environment. On Debian/Ubuntu, install the python3-venv package and retry."
+  echo "Installing Python dependencies into the virtual environment..."
+  "$REPO_DIR/venv/bin/python" -m pip install --upgrade pip || fail "Could not upgrade pip in the virtual environment."
+  "$REPO_DIR/venv/bin/python" -m pip install -r "$REPO_DIR/requirements.txt" || fail "Python dependency installation failed. Review the pip error above."
 else
   echo "No requirements.txt was found; no Python packages were installed."
 fi
