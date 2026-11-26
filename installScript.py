@@ -104,11 +104,15 @@ def run_installer():
         if installer_dir != home and home in installer_dir.parents:
             logging.info("Removing installer directory because keepInstaller is false.")
             try:
-                shutil.rmtree(installer_dir)
+                (installer_dir / "executables" / "install.sh").unlink(missing_ok=True)
+                (installer_dir / "executables").rmdir()
+                (installer_dir / "installOptions.json").unlink(missing_ok=True)
+                (installer_dir / "installScript.py").unlink(missing_ok=True)
+                installer_dir.rmdir()
                 print("Temporary installer files removed.")
             except OSError as error:
-                logging.warning("Could not remove installer files: %s", error)
-                print(f"Warning: could not remove installer files: {error}")
+                logging.warning("Installer directory was not empty or could not be cleaned: %s", error)
+                print("Installer files were left in place because the directory contains other files.")
         else:
             logging.warning("Skipped cleanup because installer directory is the home directory.")
             print("Installer files were kept because they are located directly in your home directory.")
