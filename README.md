@@ -94,3 +94,69 @@ If installation fails, please include this log when reporting the problem.
 ---
 
 **Thank you for installing iOrchid Horticulture Management!**
+
+# Accessing the iOrchid Web Frontend
+
+Once iOrchid has successfully started, its web frontend can be accessed through a web browser.
+
+There are two ways to access the frontend, depending on whether your server has a domain name.
+
+## Scenario 1: Server with a domain name
+
+If your server has a registered domain name (for example, `iorchid.example.com`), you can access the frontend using that domain.
+
+**Step 1.** Ensure your domain's DNS records point to your server's public IP address.
+
+**Step 2.** Ensure port 5002 is permitted through your server firewall and any external firewall.
+
+**Step 3.** Open your browser and enter:
+
+```text
+http://iorchid.example.com:5002
+```
+
+Replace `iorchid.example.com` with your actual domain name.
+
+**Recommended:** For production deployments, configure a reverse proxy such as Nginx or Apache with HTTPS. This allows users to access iOrchid through:
+
+```text
+https://iorchid.example.com
+```
+
+This requires additional server configuration and a valid TLS certificate.
+
+## Scenario 2: Server without a domain name
+
+If your server does not have a domain name, you can access the frontend using its public IP address.
+
+**Step 1.** Find your server's public IP address.
+
+**Step 2.** Ensure port 5002 is permitted through your server firewall and any external firewall.
+
+**Step 3.** Open your browser and enter:
+
+```text
+http://YOUR-SERVER-IP:5002
+```
+
+For example:
+
+```text
+http://203.0.113.10:5002
+```
+
+Replace the example IP address with your server's actual public IP address.
+
+## Important troubleshooting information
+
+If the frontend does not load, check the following:
+
+1. Confirm that iOrchid is running on the server.
+2. Confirm that the web server is listening on port 5002.
+3. Check that your firewall permits the required traffic.
+4. If using a domain, verify that its DNS records point to the correct server.
+5. Check the server terminal for error messages.
+
+**Security notice:** Do not expose the iOrchid frontend directly to the public internet without appropriate security measures. For internet-facing installations, use HTTPS and consider restricting access through a firewall or VPN.
+
+**Remember:** The server must remain running, and the iOrchid application process must stay active for the frontend to remain available.
