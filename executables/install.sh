@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 REPO_URL="https://github.com/Anonymous-birthman2024/iOrchid-Horticulture-Management.git"
 REPO_DIR="${HOME}/iOrchid-Horticulture-Management"
-MIN_FREE_KB=40960
+MIN_FREE_KB=512000
 
 fail() {
   echo "ERROR: $*" >&2
@@ -27,7 +27,7 @@ python3 -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 9) else 1)
 
 AVAILABLE_KB="$(df -Pk "$HOME" | awk 'NR==2 {print $4}')"
 [[ "$AVAILABLE_KB" =~ ^[0-9]+$ ]] || fail "Could not determine available disk space."
-[ "$AVAILABLE_KB" -ge "$MIN_FREE_KB" ] || fail "At least 40 MB of free space is required in the filesystem containing $HOME."
+[ "$AVAILABLE_KB" -ge "$MIN_FREE_KB" ] || fail "At least 500 MB of free space is required in the filesystem containing $HOME."
 
 echo "Checking access to the iOrchid repository..."
 git ls-remote --exit-code "$REPO_URL" HEAD >/dev/null 2>&1 || fail "Cannot reach the iOrchid Git repository. Check your internet connection and repository access."
