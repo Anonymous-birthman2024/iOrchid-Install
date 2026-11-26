@@ -42,6 +42,9 @@ if [ -e "$REPO_DIR" ]; then
     fail "The existing iOrchid directory contains local changes. Commit or back them up before updating; no files were changed."
   fi
 
+  CURRENT_BRANCH="$(git -C "$REPO_DIR" branch --show-current)"
+  [ "$CURRENT_BRANCH" = "main" ] || fail "The existing installation is on branch $CURRENT_BRANCH, not main. Switch to main before updating."
+
   echo "Existing iOrchid installation found. Updating it safely..."
   git -C "$REPO_DIR" pull --ff-only origin main || fail "Could not fast-forward the existing installation. Check its branch and Git status."
 else
