@@ -96,7 +96,11 @@ def run_installer():
     print("\nInstallation complete!")
     print(f"Application location: {target}")
     print("To start iOrchid, run:")
-    print(f'  cd "{target}" && python3 run.py')
+    python_executable = target / "venv" / "bin" / "python"
+    if python_executable.is_file():
+        print(f'  "{python_executable}" "{target / "run.py"}"')
+    else:
+        print(f'  cd "{target}" && python3 run.py')
 
     if not options["keepInstaller"]:
         home = Path.home().resolve()
