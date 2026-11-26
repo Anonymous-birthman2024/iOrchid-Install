@@ -3,7 +3,6 @@
 
 import json
 import logging
-import os
 import shutil
 import subprocess
 import sys
@@ -102,7 +101,7 @@ def run_installer():
     if not options["keepInstaller"]:
         home = Path.home().resolve()
         installer_dir = SCRIPT_DIR.resolve()
-        if installer_dir != home and home not in installer_dir.parents:
+        if installer_dir != home and home in installer_dir.parents:
             logging.info("Removing installer directory because keepInstaller is false.")
             try:
                 shutil.rmtree(installer_dir)
@@ -122,7 +121,6 @@ def main():
         filename=str(LOG_FILE),
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",
-        encoding="utf-8",
     )
     try:
         return run_installer()
